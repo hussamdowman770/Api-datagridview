@@ -1,0 +1,30 @@
+ private async void button1_Click(object sender, EventArgs e)
+        {
+            HttpClient httpClient = new HttpClient();
+            string apiUrl = "http://localhost:8000/api/Category10_Api";
+            
+            HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+           
+            if (response.IsSuccessStatusCode)
+            {
+               
+                string responseBody = await response.Content.ReadAsStringAsync();
+                List<Dictionary<string, object>> dataDictionary = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(responseBody);
+
+               foreach(var data in dataDictionary)
+                {
+                    dataGridView1.Rows.Add(data["title"]);
+                }
+                
+                // Process the response as needed
+            }
+            else
+            {
+                MessageBox.Show($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+
+                
+            }
+
+
+        }
